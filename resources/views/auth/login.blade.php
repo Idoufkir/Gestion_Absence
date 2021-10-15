@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('content')
-<div class="container">
+<div class="container p-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 
-                <div class="card-body">
+                <div class="card-body bg-indigo-100">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::get('/', function () {
 });
 
 Route::resource('employes', EmployeController::class);
+Route::resource('home', HomeController::class);
 
 Route::get('/demo', function () {
     return view('demo');
@@ -35,4 +37,12 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
 });
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
+Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
+
+Route::get('/hello', function () {
+    return response()->json([
+        'name' => 'Abigail',
+        'state' => 'CA',
+        'city' => 'KA',
+    ]);
+});
