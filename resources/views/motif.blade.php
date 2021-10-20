@@ -21,7 +21,7 @@
           <form action="{{ route('motifs.store') }}" method="post"
           style="display: inline-block">
           @csrf
-          <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-90" type="submit">I'm Here</button>
+          <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" type="submit">I'm Here</button>
         </form>
           <table class="table shadow-lg bg-blue-100 bg-opacity-60">
             <thead>
