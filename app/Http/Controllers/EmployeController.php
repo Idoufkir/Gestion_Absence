@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Employe;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeController extends Controller
 {
@@ -14,8 +15,21 @@ class EmployeController extends Controller
      */
     public function index()
     {
-        $employe = Employe::all();
-        return view('index', compact('employe'));
+        
+
+        $id = Auth::user()->getId();
+        $user = User::where('id', $id)->first(['id', 'name', 'email', 'intitule', 'role']);
+        $role = User::where('id', $id)->value('role');
+
+        if ($role == "admin") {
+            $employe = User::all();
+            return view('index', compact('employe'));
+        }else if ($role == "user") {
+            $employe = User::where('id', $id)->get();
+            return view('index', compact('employe'));
+        } else {
+            return view('404', compact('not-found'));
+        }
     }
 
     /**
@@ -25,7 +39,7 @@ class EmployeController extends Controller
      */
     public function create()
     {
-        return view('create');
+        //
     }
 
     /**
@@ -36,14 +50,7 @@ class EmployeController extends Controller
      */
     public function store(Request $request)
     {
-        $storeData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|max:255',
-            'intitule' => 'required|max:255',
-        ]);
-        $employe = Employe::create($storeData);
-
-        return redirect('/employes')->with('completed', 'Employe has been saved!');
+        //
     }
 
     /**
@@ -65,8 +72,21 @@ class EmployeController extends Controller
      */
     public function edit($id)
     {
-        $employe = Employe::findOrFail($id);
-        return view ('edit', compact('employe'));
+
+        $userId = Auth::user()->getId();
+        $user = User::where('id', $userId)->first(['id', 'name', 'email', 'intitule', 'role']);
+        $role = User::where('id', $userId)->value('role');
+
+        if ($role == "admin") {
+            $employe = User::findOrFail($id);
+            return view ('edit', compact('employe'));
+        }else if ($role == "user") {
+            $employe = User::findOrFail($userId);
+            return view('edit', compact('employe'));
+        } else {
+            return view('404', compact('not-found'));
+        }
+        
     }
 
     /**
@@ -84,7 +104,7 @@ class EmployeController extends Controller
             'intitule' => 'required|max:255',
         ]);
 
-        Employe::whereId($id)->update($updateData);
+        User::whereId($id)->update($updateData);
         return redirect('/employes')->with('completed', 'Employe has been updated');
     }
 
@@ -96,9 +116,20 @@ class EmployeController extends Controller
      */
     public function destroy($id)
     {
-        $employe = Employe::findOrFail($id);
-        $employe->delete();
 
-        return redirect('/employes')->with('completed', 'Employe has been deleted');
+        
+        $userId = Auth::user()->getId();
+        $user = User::where('id', $userId)->first(['id', 'name', 'email', 'intitule', 'role']);
+        $role = User::where('id', $userId)->value('role');
+
+        if ($role == "admin") {
+            $employe = User::findOrFail($id);
+            $employe->delete();
+                return redirect('/employes')->with('completed', 'Employe has been deleted');
+        } else {
+            return view('404');
+        }
+
+        
     }
 }

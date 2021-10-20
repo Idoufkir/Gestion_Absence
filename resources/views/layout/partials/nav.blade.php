@@ -21,9 +21,10 @@
             </div>
             <div class="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
               <a href="{{ url('/') }}" class="font-medium text-gray-500 hover:text-gray-900">Home</a>
-
+              @auth
               <a href="{{ url('/employes') }}" class="font-medium text-gray-500 hover:text-gray-900">Employes</a>
-
+              <a href="{{ url('/historique') }}" class="font-medium text-gray-500 hover:text-gray-900">Historique</a>
+              @endauth
 
               @if (Route::has('login'))
 

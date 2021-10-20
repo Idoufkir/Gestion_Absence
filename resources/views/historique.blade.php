@@ -22,39 +22,32 @@
           <table class="table shadow-lg bg-blue-100 bg-opacity-60">
             <thead>
               <tr class="bg-gray-50">
-              @auth
-                <td class="text-center">#</td>
-                @endauth
                 <td class="text-center">Name</td>
-                <td class="text-center">Email</td>
-                <td class="text-center">Intitulé</td>
-                <td class="text-center">#</td>
-                @auth
-                <td class="text-center">Action</td>
-                @endauth
+                <td class="text-center">Intitule</td>
+                <td class="text-center">Retard</td>
+                <td class="text-center">Absent</td>
+                <td class="text-center">Conge</td>
+                <td class="text-center"></td>
               </tr>
             </thead>
             <tbody>
-              @foreach($employe as $employes)
+              @foreach($historique as $historiques)
               <tr>
-              @auth
-                <td class="text-center">{{$employes->id}}</td>
-                @endauth
-                <td class="text-center">{{$employes->name}}</td>
-                <td class="text-center">{{$employes->email}}</td>
-                <td class="text-center">{{$employes->intitule}}</td>
-                <td class="text-center">{{$employes->role}}</td>
-                @auth
-                <td class="text-center">
-                  <a href="{{ route('employes.edit', $employes->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                  <form action="{{ route('employes.destroy', $employes->id)}}" method="post"
+                <td class="text-center">{{$historiques->user->name}}</td>
+                <td class="text-center">{{$historiques->user->intitule}}</td>
+                <td class="text-center">{{$historiques->retard}} Minutes</td>
+                <td class="text-center">{{$historiques->absent}} Jours</td>
+                <td class="text-center">{{$historiques->conge}} Jours</td>
+                {{-- <td class="text-center">
+                  <a href="{{ route('historiques.edit', $historiques->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                  <form action="{{ route('historiques.destroy', $historiques->id)}}" method="post"
                     style="display: inline-block">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                   </form>
-                </td>
-                @endauth
+                </td> --}}
+
               </tr>
               @endforeach
             </tbody>

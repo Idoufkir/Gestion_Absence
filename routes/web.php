@@ -1,8 +1,11 @@
 <?php
 
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HistoriqueController;
+use App\Http\Controllers\MotifController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,30 +22,37 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('employes', EmployeController::class);
-Route::resource('home', HomeController::class);
+//Route::resource('employes', EmployeController::class);
+
+Route::get('/employes', [EmployeController::class, 'index'])->middleware('auth')->name('employes.index');
+Route::get('/employes/{employe}/edit', [EmployeController::class, 'edit'])->middleware('auth')->name('employes.edit');
+Route::delete('/employes/{employe}', [EmployeController::class, 'destroy'])->middleware('auth')->name('employes.destroy');
+Route::patch('/employes/{employe}', [EmployeController::class, 'update'])->middleware('auth')->name('employes.update');
+
+Route::get('/historique', [HistoriqueController::class, 'index'])->middleware('auth')->name('historiques.index');
+
+Route::get('/motif', [MotifController::class, 'index'])->middleware('auth')->name('motifs.index');
+Route::post('/motif', [MotifController::class, 'store'])->middleware('auth')->name('motifs.store');
 
 Route::get('/demo', function () {
     return view('demo');
  });
 
- // user protected routes
-Route::group(['middleware' => ['auth', 'user'], 'prefix' => 'user'], function () {
-    Route::get('/', 'HomeController@index')->name('user_dashboard');
-});
 
-// admin protected routes
-Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
-    Route::get('/', 'HomeController@index')->name('admin_dashboard');
-});
+
+//  // user protected routes
+// Route::group(['middleware' => ['auth', 'user'], 'prefix' => 'user'], function () {
+//     Route::get('/', 'HomeController@index')->name('user_dashboard');
+// });
+
+// // admin protected routes
+// Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
+// });
+
 Auth::routes();
 
-Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
+Route::get('/404', function()
+{
+    return view('404');
+})->name('not-found');
 
-Route::get('/hello', function () {
-    return response()->json([
-        'name' => 'Abigail',
-        'state' => 'CA',
-        'city' => 'KA',
-    ]);
-});

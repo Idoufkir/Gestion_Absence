@@ -20,7 +20,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'intitule',
         'password',
+        'day_login_at',
     ];
 
     /**
@@ -41,4 +43,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function historique()
+    {
+        return $this->hasOne(Historique::class);
+        // OR return $this->hasOne('App\Phone');
+    }
+
+    public function motif() 
+    {
+        return $this->belongsTo(Motif::class);
+    }
+
+    public function touchLastLogin()
+     {
+        $this->day_login_at = $this->freshTimestamp();
+
+        return $this->save();
+     }
 }

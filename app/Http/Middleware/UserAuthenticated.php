@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Auth;
 use Closure;
 
-class AdminAuthenticated
+class UserAuthenticated
 {
     public function handle($request, Closure $next)
     {

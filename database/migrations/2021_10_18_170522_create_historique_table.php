@@ -1,0 +1,46 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateHistoriqueTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('historiques', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->integer('retard');
+            $table->integer('conge');
+            $table->integer('absent');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+            ->references('id')
+            ->on('users')
+            ->onDelete('restrict')
+            ->onUpdate('restrict');
+            $table->unsignedBigInteger('motif_id');
+            $table->foreign('motif_id')
+            ->references('id')
+            ->on('motifs')
+            ->onDelete('restrict')
+            ->onUpdate('restrict');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('historique');
+    }
+}

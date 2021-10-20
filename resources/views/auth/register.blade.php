@@ -40,6 +40,20 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="intitule" class="col-md-4 col-form-label text-md-right">{{ __('Intitule') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="intitule" type="text" class="form-control @error('intitule') is-invalid @enderror" name="intitule" value="{{ old('intitule') }}" required>
+
+                                @error('intitule')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
