@@ -17,8 +17,20 @@ class MotifController extends Controller
      */
     public function index()
     {
-        $motif = Motif::all();
-        return view('motif', ['motif' => $motif]);
+
+
+        $id = Auth::user()->getId();
+        $role = User::where('id', $id)->value('role');
+
+        if ($role == "admin") {
+            $motif = Motif::all();
+                return view('motif', ['motif' => $motif]);
+        }else if ($role == "user") {
+            $motif = Motif::where('user_id', $id)->get();
+                return view('motif', ['motif' => $motif]);
+        } else {
+            return view('404', compact('not-found'));
+        }
 
         // $id = Auth::user()->getId();
         // $datetime1 = \Carbon\Carbon::createFromFormat('H:s:i', '9:00:00');
