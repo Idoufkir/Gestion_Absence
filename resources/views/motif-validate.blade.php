@@ -18,7 +18,9 @@
       @endif
       <div class="flex flex-col justify-center items-center">
         <div class="w-full max-w-xxl">
-          <a href="{{ url('/motifs/status') }}" class="bg-blue-900 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded-full my-2">List des Motifs en attend</a>
+          <button class="bg-blue-900 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded-full my-2">
+            List des Motifs en attend
+          </button>
           <table class="table shadow-lg bg-blue-100 bg-opacity-60">
             <thead>
               <tr class="bg-gray-50">
@@ -49,11 +51,11 @@
                 @auth
                 <td class="text-center">
                   <a href="{{ route('motifs.edit', $motifs->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                  <form action="{{ route('motifs.destroy', $motifs->id)}}" method="post"
+                  <form action="{{ route('motifs.validat', $motifs->id)}}" method="patch"
                     style="display: inline-block">
                     @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                    @method('UPDATE')
+                    <button class="btn btn-danger btn-sm" type="submit">Validate</button>
                   </form>
                 </td>
                 @endauth

@@ -38,6 +38,8 @@ Route::post('/motifs', [MotifController::class, 'store'])->middleware('auth')->n
 Route::get('/motifs/{motif}/edit', [MotifController::class, 'edit'])->middleware('auth', 'admin')->name('motifs.edit');
 // Route::delete('/motifs/{motif}', [MotifController::class, 'destroy'])->middleware('auth', 'admin')->name('motifs.destroy');
 Route::patch('/motifs/{motif}', [MotifController::class, 'update'])->middleware('auth', 'admin')->name('motifs.update');
+Route::get('/motifs/status', [MotifController::class, 'status'])->middleware('auth', 'admin')->name('motifs.status');
+Route::patch('/motifs/status/{motif}', [MotifController::class, 'validat'])->middleware('auth', 'admin')->name('motifs.validat');
 
 Route::get('/demo', function () {
     return view('demo');
