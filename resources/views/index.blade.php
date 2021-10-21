@@ -4,8 +4,8 @@
 
 
 
-<div class="border p-8 content-center">
-  <div class="bg-indigo-600 p-6">
+<div class="border p-8 content-center ">
+  <div class="bg-indigo-600 p-6 bg-gradient-to-r from-blue-600 via-red-300 to-pink-600">
     <div class="card-body">
       @if ($errors->any())
       <div class="alert alert-danger">

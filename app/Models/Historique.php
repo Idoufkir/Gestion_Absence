@@ -15,7 +15,11 @@ class Historique extends Model
   
     protected $fillable = [
         'user_id',
-        'motif_id'
+        'motif_id',
+        'retard',
+        'conge',
+        'absent',
+        'jrs_ferier',
     ];
 
     /**

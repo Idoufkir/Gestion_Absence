@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToMotifsTable extends Migration
+class AddJrFerierToHistoriquesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddStatusToMotifsTable extends Migration
      */
     public function up()
     {
-        Schema::table('motifs', function (Blueprint $table) {
-            $table->boolean('status')->default(0);
+        Schema::table('historiques', function (Blueprint $table) {
+            $table->integer('jrs_ferier');
         });
     }
 
@@ -25,7 +25,7 @@ class AddStatusToMotifsTable extends Migration
      */
     public function down()
     {
-        Schema::table('motifs', function (Blueprint $table) {
+        Schema::table('historiques', function (Blueprint $table) {
             //
         });
     }

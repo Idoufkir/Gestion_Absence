@@ -14,6 +14,7 @@ class Motif extends Model
         'duration',
         'comment',
         'user_id',
+        'status',
         
     ];
 
