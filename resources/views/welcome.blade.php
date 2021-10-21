@@ -4,6 +4,7 @@
 @section('content')
 
 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+
       <div class="md:flex container border p-4">
                     <div class="md:flex-shrink-0">
                         <img class="rounded-lg md:w-56" src="https://peoplespheres.com/wp-content/uploads/2019/02/conges_absences.png" alt="Woman paying for a purchase">
@@ -14,6 +15,13 @@
                         <p class="mt-2 text-gray-600">Exemple app Laravel / MySQL</p>
                     </div>
                 </div>
+                @auth
+                <form action="{{ route('motifs.store') }}" method="post"
+                style="display: inline-block">
+                @csrf
+                <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" type="submit">I'm Here</button>
+              </form>
+                @endauth
       </main>
     </div>
   </div>

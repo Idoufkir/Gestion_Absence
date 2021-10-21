@@ -20,17 +20,30 @@ class MotifController extends Controller
 
 
         $id = Auth::user()->getId();
-        $role = User::where('id', $id)->value('role');
+        // $role = User::where('id', $id)->value('role');
 
-        if ($role == "admin") {
-            $motif = Motif::all();
-                return view('motif', ['motif' => $motif]);
-        }else if ($role == "user") {
-            $motif = Motif::where('user_id', $id)->get();
-                return view('motif', ['motif' => $motif]);
-        } else {
-            return view('404', compact('not-found'));
-        }
+        // if ($role == "admin") {
+        //     $motif = Motif::all();
+        //         return view('motif-admin', ['motif' => $motif]);
+        // }else if ($role == "user") {
+        //     $motif = Motif::where('user_id', $id)->get();
+        //         return view('motif-user', ['motif' => $motif]);
+        // } else {
+        //     return view('404', compact('not-found'));
+        // }
+
+        // $motif = Motif::select('created_at')->where('user_id', $id)->get();
+        // $countMotif = $motif->count()-1;
+        // $lastDay = $motif[$countMotif]->value('created_at')->day;
+        // $day = \Carbon\Carbon::now()->day;
+
+        
+        $datetime2 = User::where('id', $id)->value('day_login_at');
+        $day = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $datetime2)->day;
+        echo $day;
+        $motif = Motif::select('created_at')->where('user_id', $id)->get();
+        $countMotif = $motif->count();
+        echo $countMotif;
 
         // $id = Auth::user()->getId();
         // $datetime1 = \Carbon\Carbon::createFromFormat('H:s:i', '9:00:00');
@@ -80,22 +93,43 @@ class MotifController extends Controller
     {
 
         $id = Auth::user()->getId();
+        $role = User::where('id', $id)->value('role');
         $user = auth()->user();
-        $datetime1 = \Carbon\Carbon::createFromFormat('H:s:i', '9:00:00');
+        $datetime1 = \Carbon\Carbon::createFromFormat('H:i:s', '9:00:00');
         $datetime2 = User::where('id', $id)->value('day_login_at');
+
+        $day = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $datetime2)->day;
+        
 
 
         
         $interval = $datetime1->diff($datetime2);
         $finalData = $interval->format('%H')*60 + $interval->format('%I');
         $name = $user->name; 
+        $userId = $user->id;
         $ArgumentA = 'Absent de ';
+        $ArgumentB = 'Retard de ';
 
         $fileName = $ArgumentA.$name;
+
+        if ($role == "admin") 
+        {
+            $view = 'motif-admin';
+        }
+        else if ($role == "user") 
+        {
+            $view = 'motif-user';
+        }
+
+        $motif = Motif::select('created_at')->where('user_id', $id)->get();
+        $countMotif = $motif->count();
+        $lastDay = $motif[$countMotif]->value('created_at')->day;
+        $dayNow = \Carbon\Carbon::now()->day;
+
         
         
         if ($datetime2 != Null) {
-            if ($finalData > 60) 
+            if ($finalData > 60)
             {
                 $motif = Motif::create([
                     'Motifname' => 'Absent',
@@ -110,13 +144,14 @@ class MotifController extends Controller
                 $motif = Motif::create([
                     'Motifname' => 'Retard',
                     'duration' => $finalData,
-                    'comment' => `Retard de $user->name`,
+                    'comment' => $ArgumentB.$name,
                     'user_id' => $user->id,
                 ]);
                 $motif->save();
             }
-            
+            return view ($view, compact('motif'));
         }
+        
     }
 
     /**
@@ -127,7 +162,7 @@ class MotifController extends Controller
      */
     public function show($id)
     {
-        //
+            //
     }
 
     /**
@@ -138,7 +173,8 @@ class MotifController extends Controller
      */
     public function edit($id)
     {
-        //
+        $motif = Motif::findOrFail($id);
+            return view ('edit-motif', compact('motif'));
     }
 
     /**
@@ -150,7 +186,15 @@ class MotifController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $updateData = $request->validate([
+            'Motifname' => 'required|max:255',
+            'duration' => 'required|max:255',
+            'comment' => 'required|max:255',
+            
+        ]);
+
+        Motif::whereId($id)->update($updateData);
+        return redirect('/motifs')->with('completed', 'Motif has been updated');
     }
 
     /**
@@ -161,6 +205,8 @@ class MotifController extends Controller
      */
     public function destroy($id)
     {
-        //
+            $motif = Motif::findOrFail($id);
+            $motif->delete();
+                return redirect('/motifs')->with('completed', 'Motif has been deleted');
     }
 }

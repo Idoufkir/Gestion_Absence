@@ -23,6 +23,7 @@
               <a href="{{ url('/') }}" class="font-medium text-gray-500 hover:text-gray-900">Home</a>
               @auth
               <a href="{{ url('/employes') }}" class="font-medium text-gray-500 hover:text-gray-900">Employes</a>
+              <a href="{{ url('/motifs') }}" class="font-medium text-gray-500 hover:text-gray-900">Motifs</a>
               <a href="{{ url('/historique') }}" class="font-medium text-gray-500 hover:text-gray-900">Historique</a>
               @endauth
 

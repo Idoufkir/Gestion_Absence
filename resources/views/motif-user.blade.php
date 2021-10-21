@@ -18,27 +18,21 @@
       @endif
       <div class="flex flex-col justify-center items-center">
         <div class="w-full max-w-xxl">
-          <form action="{{ route('motifs.store') }}" method="post"
-          style="display: inline-block">
-          @csrf
-          <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" type="submit">I'm Here</button>
-        </form>
           <table class="table shadow-lg bg-blue-100 bg-opacity-60">
             <thead>
               <tr class="bg-gray-50">
+                <td class="text-center">Date</td>
                 <td class="text-center">Name</td>
-                <td class="text-center">Intitule</td>
                 <td class="text-center">Motif</td>
                 <td class="text-center">Durée</td>
                 <td class="text-center">Comment</td>
-
               </tr>
             </thead>
             <tbody>
               @foreach($motif as $motifs)
               <tr>
+                <td class="text-center">{{ $motifs->created_at->format('d / m / Y') }}</td>
                 <td class="text-center">{{$motifs->user->name}}</td>
-                <td class="text-center">{{$motifs->user->intitule}}</td>
                 @php
                 $mofiName = $motifs->Motifname;
                 if ($mofiName == "Retard")

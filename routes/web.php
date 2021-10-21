@@ -3,9 +3,11 @@
 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\MotifController;
+use App\Http\Middleware\AdminAuthenticated;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,23 +33,15 @@ Route::patch('/employes/{employe}', [EmployeController::class, 'update'])->middl
 
 Route::get('/historique', [HistoriqueController::class, 'index'])->middleware('auth')->name('historiques.index');
 
-Route::get('/motif', [MotifController::class, 'index'])->middleware('auth')->name('motifs.index');
-Route::post('/motif', [MotifController::class, 'store'])->middleware('auth')->name('motifs.store');
+Route::get('/motifs', [MotifController::class, 'index'])->middleware('auth')->name('motifs.index');
+Route::post('/motifs', [MotifController::class, 'store'])->middleware('auth')->name('motifs.store');
+Route::get('/motifs/{motif}/edit', [MotifController::class, 'edit'])->middleware('auth', 'admin')->name('motifs.edit');
+// Route::delete('/motifs/{motif}', [MotifController::class, 'destroy'])->middleware('auth', 'admin')->name('motifs.destroy');
+Route::patch('/motifs/{motif}', [MotifController::class, 'update'])->middleware('auth', 'admin')->name('motifs.update');
 
 Route::get('/demo', function () {
     return view('demo');
  });
-
-
-
-//  // user protected routes
-// Route::group(['middleware' => ['auth', 'user'], 'prefix' => 'user'], function () {
-//     Route::get('/', 'HomeController@index')->name('user_dashboard');
-// });
-
-// // admin protected routes
-// Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
-// });
 
 Auth::routes();
 
@@ -56,3 +50,20 @@ Route::get('/404', function()
     return view('404');
 })->name('not-found');
 
+
+// user protected routes
+Route::group(['middleware' => ['auth', 'user'], 'prefix' => 'user'], function () {
+    Route::get('/', function () 
+    {
+        return view('welcome');
+    });
+});
+
+// admin protected routes
+Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
+    Route::get('/', function () 
+    {
+        return view('motif');
+    });
+    Route::delete('/motifs/{motif}', [MotifController::class, 'destroy'])->name('motifs.destroy');
+});

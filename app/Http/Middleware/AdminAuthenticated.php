@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserAuthenticated
+class AdminAuthenticated
 {
     /**
      * Handle an incoming request.
@@ -25,12 +25,12 @@ class UserAuthenticated
             $user = Auth::user();
 
             // if user is not admin take him to his dashboard
-            if ( $user->hasRole('admin') ) {
-                return redirect(route('motifs'));
+            if ( $user->hasRole('user') ) {
+                return redirect(route('index'));
             }
 
             // allow admin to proceed with request
-            else if ( $user->hasRole('user') ) {
+            else if ( $user->hasRole('admin') ) {
                 return $next($request);
             }
         }

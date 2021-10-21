@@ -10,9 +10,11 @@ class Motif extends Model
     use HasFactory;
     protected $fillable = [
         'Motifname',
+        'created_at',
         'duration',
         'comment',
         'user_id',
+        
     ];
 
     public function historique()
