@@ -50,12 +50,6 @@
                 @auth
                 <td class="text-center">
                   <a href="{{ route('motifs.edit', $motifs->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                  <form action="{{ route('motifs.destroy', $motifs->id)}}" method="post"
-                    style="display: inline-block">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                  </form>
                 </td>
                 @endauth
               </tr>

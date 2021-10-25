@@ -30,13 +30,14 @@ class MotifController extends Controller
             $motif = Motif::where('user_id', $id)->get();
                 return view('motif-user', ['motif' => $motif]);
         } else {
-            return view('404', compact('not-found'));
+            abort(403, 'Unauthorized action.');
         }
 
-        // $user = auth()->user();
-        // $userId = $user->id;
+        $user = auth()->user();
+        $userId = $user->id;
 
         // $motifs = Motif::where('user_id', $userId)->orderBy('id', 'desc')->value('created_at');
+        // $motif = Motif::where('user_id', $userId);
         
         // $motifsCount = Motif::where('user_id', $userId)->count();
         // if ($motifsCount  == Null) {
@@ -51,6 +52,9 @@ class MotifController extends Controller
         //         echo "You dont have Motif Today";
         //     }
         // }
+
+        
+
 
     }
 
@@ -95,6 +99,7 @@ class MotifController extends Controller
             $day = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $datetime2)->day;
         //#
         $motifsCount = Motif::where('user_id', $userId)->count();
+        //$motifExiste = Motif::where('user_id', $userId)->exists();
         if ($motifsCount  <= 0) {
             if ($datetime2 != Null) {
                 if ($finalData > 60)

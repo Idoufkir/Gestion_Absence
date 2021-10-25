@@ -30,8 +30,8 @@
                 <td class="text-center"></td>
               </tr>
             </thead>
-            <tbody>
-              @foreach($historique as $historiques)
+            
+              @forelse ($historique as $historiques)
               <tr>
                 <td class="text-center">{{$historiques->user->name}}</td>
                 <td class="text-center">{{$historiques->user->intitule}}</td>
@@ -49,9 +49,13 @@
                 </td> --}}
 
               </tr>
-              @endforeach
+              @empty
+              <div class="text-center">No Historique</div>
+              <br>
+              @endforelse
             </tbody>
           </table>
+          
         </div>
       </div>
     </div>

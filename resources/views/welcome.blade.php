@@ -4,7 +4,6 @@
 @section('content')
 
 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-
     <div class="md:flex container border p-4">
         <div class="md:flex-shrink-0">
             <img class="rounded-lg md:w-56"
@@ -20,19 +19,13 @@
         </div>
     </div>
     @auth
-
-
-
-
     <div class="p-3">
-        
         <form action="{{ route('motifs.store') }}" method="POST" style="display: inline-block">
-        @csrf
-        <button onclick="openModal(true)"
-            class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white focus:outline-none"
-            type="submit" >
-            Présent(e)
-        </button>
+            @csrf
+            <button onclick="openModal(true)"
+                class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white focus:outline-none" type="submit">
+                Présent(e)
+            </button>
         </form>
     </div>
     <!-- overlay -->
@@ -52,7 +45,7 @@
             <div class="px-4 py-3 border-b border-gray-200">
                 <h2 class="text-xl font-semibold text-gray-600">Validation de présence</h2>
             </div>
-            
+
             <!-- body -->
             <div class="w-full p-3">
                 Présence réussie
