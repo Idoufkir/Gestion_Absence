@@ -27,55 +27,31 @@ class MotifController extends Controller
             $motif = Motif::where('status', 1)->get();
                 return view('motif-admin', ['motif' => $motif]);
         }else if ($role == "user") {
-            $motif = Motif::where('user_id', $id)->where('status', 1)->get();
+            $motif = Motif::where('user_id', $id)->get();
                 return view('motif-user', ['motif' => $motif]);
         } else {
             return view('404', compact('not-found'));
         }
 
+        // $user = auth()->user();
+        // $userId = $user->id;
 
-
-
-
-        // $motif = Motif::select('created_at')->where('user_id', $id)->get();
-        // $countMotif = $motif->count()-1;
-        // $lastDay = $motif[$countMotif]->value('created_at')->day;
-        // $day = \Carbon\Carbon::now()->day;
-
+        // $motifs = Motif::where('user_id', $userId)->orderBy('id', 'desc')->value('created_at');
         
-        // $datetime2 = User::where('id', $id)->value('day_login_at');
-        // $day = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $datetime2)->day;
-        // echo $day;
-        // $motif = Motif::select('created_at')->where('user_id', $id)->get();
-        // $countMotif = $motif->count();
-        // echo $countMotif;
+        // $motifsCount = Motif::where('user_id', $userId)->count();
+        // if ($motifsCount  == Null) {
+        //     echo 'Null';
+        // } else {
+        //     $DayNow = date('dmY', strtotime(now()));
+        //     $Day0 = date('dmY', strtotime($motifs));
+            
+        //     if ($Day0 == $DayNow) {
+        //         echo "You have Motif Today";
+        //     } else if ($Day0 < $DayNow) {
+        //         echo "You dont have Motif Today";
+        //     }
+        // }
 
-        // $id = Auth::user()->getId();
-        // $datetime1 = \Carbon\Carbon::createFromFormat('H:s:i', '9:00:00');
-        // $datetime2 = User::where('id', $id)->value('day_login_at');
-        // $datetime2 = \Carbon\Carbon::createFromFormat('H:s:i', '9:00:10');
-
-        
-        // $interval = $datetime1->diff($datetime2);
-        // $finalData = $interval->format('%H')*60 + $interval->format('%I');
-
-        
-
-        // echo "Datetime1 <br/>";
-        // echo $datetime1;
-        // echo "<br/><br/>";
-        // echo "Datetime 2 <br/>";
-        // echo $datetime2;
-        // echo "<br/><br/>";
-        // echo "Result : <br/>";
-        
-        // echo "$finalData Minutes";
-        // echo "<br/><br/>";
-        // $mytime = date('Y-m-d H:i:s');
-        // echo $mytime;
-        // echo "<br/><br/>";
-        // $user =  auth()->user();
-        // echo $user->id;
     }
 
     /**
@@ -85,7 +61,7 @@ class MotifController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -102,12 +78,6 @@ class MotifController extends Controller
         $user = auth()->user();
         $datetime1 = \Carbon\Carbon::createFromFormat('H:i:s', '9:00:00');
         $datetime2 = User::where('id', $id)->value('day_login_at');
-
-        $day = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $datetime2)->day;
-        
-
-
-        
         $interval = $datetime1->diff($datetime2);
         $finalData = $interval->format('%H')*60 + $interval->format('%I');
         $name = $user->name; 
@@ -117,48 +87,78 @@ class MotifController extends Controller
 
         $fileName = $ArgumentA.$name;
 
-        if ($role == "admin") 
-        {
-            $view = 'motif-admin';
-        }
-        else if ($role == "user") 
-        {
-            $view = 'motif-user';
-        }
-
-        $motif = Motif::select('created_at')->where('user_id', $id)->get();
+        $motifs = Motif::where('user_id', $userId)->orderBy('id', 'desc')->value('created_at');
         // $countMotif = $motif->count();
         // $lastDay = $motif[$countMotif]->value('created_at')->day;
         // $dayNow = \Carbon\Carbon::now()->day;
-
-        
-        
-        if ($datetime2 != Null) {
-            if ($finalData > 60)
-            {
-                $motif = Motif::create([
-                    'Motifname' => 'Absent',
-                    'duration' => '1',
-                    'comment' => $fileName,
-                    'user_id' => $user->id,
-                    'status' => '0',
-                ]);
-                $motif->save();
-            } 
-            else 
-            {
-                $motif = Motif::create([
-                    'Motifname' => 'Retard',
-                    'duration' => $finalData,
-                    'comment' => $ArgumentB.$name,
-                    'user_id' => $user->id,
-                    'status' => '0',
-                ]);
-                $motif->save();
+        //#magenta
+            $day = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $datetime2)->day;
+        //#
+        $motifsCount = Motif::where('user_id', $userId)->count();
+        if ($motifsCount  <= 0) {
+            if ($datetime2 != Null) {
+                if ($finalData > 60)
+                {
+                    $motif = Motif::create([
+                        'Motifname' => 'Absent',
+                        'duration' => '1',
+                        'comment' => $fileName,
+                        'user_id' => $user->id,
+                        'status' => '0',
+                    ]);
+                    $motif->save();
+                } 
+                else 
+                {
+                    $motif = Motif::create([
+                        'Motifname' => 'Retard',
+                        'duration' => $finalData,
+                        'comment' => $ArgumentB.$name,
+                        'user_id' => $user->id,
+                        'status' => '0',
+                    ]);
+                    $motif->save();
+                }
+                return redirect()->back();
             }
-            return view ($view, compact('motif'));
+        } else {
+            $DayNow = date('dmY', strtotime(now()));
+            $Day0 = date('dmY', strtotime($motifs));
+            
+            if ($Day0 == $DayNow) {
+                //#red
+                    //echo 'You have Motif';
+                    return redirect()->back();
+                //#
+            } else if ($Day0 < $DayNow) {
+                if ($datetime2 != Null) {
+                    if ($finalData > 60)
+                    {
+                        $motif = Motif::create([
+                            'Motifname' => 'Absent',
+                            'duration' => '1',
+                            'comment' => $fileName,
+                            'user_id' => $user->id,
+                            'status' => '0',
+                        ]);
+                        $motif->save();
+
+                    } 
+                    else 
+                    {
+                        $motif = Motif::create([
+                            'Motifname' => 'Retard',
+                            'duration' => $finalData,
+                            'comment' => $ArgumentB.$name,
+                            'user_id' => $user->id,
+                            'status' => '0',
+                        ]);
+                        $motif->save();
+                    }
+                    return redirect()->back();
+                }
+            }
         }
-        
     }
 
     /**
@@ -304,32 +304,36 @@ class MotifController extends Controller
             }
             
         } else {
+
+            $historique = Historique::where('user_id', $userId)->first();
             
             if ($motif->status == 1 && $motif->Motifname == 'Absent') {
 
-                $historique->absent = $absentNewValue;
-                $historique->update();
+                $historique = $historique->update([
+                    'absent' => $absentNewValue,
+                ]);
 
             } else if ($motif->status == 1 && $motif->Motifname == 'Retard') {
 
-                $historique->retard = $retardNewValue;
-                $historique->update();
+                $historique = $historique->update([
+                    'retard' => $retardNewValue,
+                ]);
 
             } else if ($motif->status == 1 && $motif->Motifname == 'congé') {
 
-                $historique->conge = $congeNewValue;
-                $historique->update();
+                $historique = $historique->update([
+                    'conge' => $congeNewValue,
+                ]);
 
             } else if ($motif->status == 1 && $motif->Motifname == 'Jour férié') {
 
-                $historique->jrs_ferier = $jrsFevrierNewValue;
-                $historique->update();
+                $historique = $historique->update([
+                    'jrs_ferier' => $jrsFevrierNewValue,
+                ]);
 
             }
 
         }
-        
-
         
         return redirect('/motifs/status')->with('completed', 'Motif has been Validate');
     }

@@ -18,9 +18,7 @@
                 @endif
                 <div class="flex flex-col justify-center items-center">
                     <div class="w-full max-w-xxl">
-                        <button class="bg-blue-900 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded-full my-2">
-                            List des Motifs en attend
-                        </button>
+                    <a href="{{ url('/motifs') }}" class="bg-blue-900 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded-full my-2">Historique des Motifs Validé</a>
                         <table class="table shadow-lg bg-blue-100 bg-opacity-60">
                             <thead>
                                 <tr class="bg-gray-50">
@@ -35,7 +33,7 @@
                             <tbody>
                                 @foreach ($motif as $motifs)
                                     <tr>
-                                        <td class="text-center">{{ $motifs->created_at->format('d / m / Y') }}</td>
+                                        <td class="text-center">{{ $motifs['created_at'] }}</td>
                                         <td class="text-center">{{ $motifs->user->name }}</td>
                                         @php
                                             $mofiName = $motifs->Motifname;

@@ -33,7 +33,8 @@
             <tbody>
               @foreach($motif as $motifs)
               <tr>
-                <td class="text-center">{{ $motifs->created_at->format('d / m / Y') }}</td>
+                <!-- <td class="text-center">{{ $motifs->created_at->isoFormat(' d MMM Y ') }}</td> -->
+                <td class="text-center">{{date(' d M Y ', strtotime($motifs['created_at'])) }}  </td>
                 <td class="text-center">{{$motifs->user->name}}</td>
                 @php
                 $mofiName = $motifs->Motifname;

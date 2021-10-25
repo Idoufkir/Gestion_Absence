@@ -26,12 +26,13 @@
                 <td class="text-center">Motif</td>
                 <td class="text-center">Durée</td>
                 <td class="text-center">Comment</td>
+                <td class="text-center">Status</td>
               </tr>
             </thead>
             <tbody>
               @foreach($motif as $motifs)
               <tr>
-                <td class="text-center">{{ $motifs->created_at->format('d / m / Y') }}</td>
+                <td class="text-center">{{ $motifs['created_at']->format('d/m/Y') }}</td>
                 <td class="text-center">{{$motifs->user->name}}</td>
                 @php
                 $mofiName = $motifs->Motifname;
@@ -44,6 +45,15 @@
                 <td class="text-center">{{$motifs->Motifname}}</td>
                 <td class="text-center">{{$motifs->duration}} {{$valeur}}</td>
                 <td class="text-center">{{$motifs->comment}}</td>
+                @php
+                $status = $motifs->status;
+                if ($status == 0)
+                    $valeur_status = "En Attend";
+                else 
+                    $valeur_status = "Validé";    
+                
+                @endphp
+                <td class="text-center">{{$valeur_status}}</td>
               </tr>
               @endforeach
             </tbody>
