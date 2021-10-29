@@ -7,8 +7,7 @@
     <div class="md:flex container border p-4">
         <div class="md:flex-shrink-0">
             <img class="rounded-lg md:w-56"
-                src="https://peoplespheres.com/wp-content/uploads/2019/02/conges_absences.png"
-                alt="Woman paying for a purchase">
+                src="https://peoplespheres.com/wp-content/uploads/2019/02/conges_absences.png">
         </div>
         <div class="mt-4 md:mt-0 md:ml-6">
             <div class="uppercase tracking-wide text-sm text-indigo-600 font-bold">SEOCom</div>
